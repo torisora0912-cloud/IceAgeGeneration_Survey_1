@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>就職氷河期世代 実態調査レポート 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2744;
+    --navy-mid: #263558;
+    --navy-light: #344a74;
+    --accent: #e85d3a;
+    --accent2: #f5a623;
+    --teal: #2a9d8f;
+    --sky: #57b8e0;
+    --cream: #faf8f4;
+    --text: #1c1c1c;
+    --text-light: #5a5a5a;
+    --border: #e0dbd4;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    line-height: 1.8;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--navy);
+    color: white;
+    padding: 64px 24px 48px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -80px; left: -80px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: rgba(232,93,58,0.15);
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; right: -60px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    background: rgba(87,184,224,0.12);
+  }
+  .hero-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--accent2);
+    border: 1px solid var(--accent2);
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+  }
+  .hero h1 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(24px, 5vw, 40px);
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 16px;
+    position: relative; z-index: 1;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero-sub {
+    font-size: 14px;
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 36px;
+    position: relative; z-index: 1;
+  }
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    flex-wrap: wrap;
+    position: relative; z-index: 1;
+  }
+  .hero-stat {
+    text-align: center;
+  }
+  .hero-stat .num {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--accent2);
+    display: block;
+  }
+  .hero-stat .label {
+    font-size: 12px;
+    color: rgba(255,255,255,0.65);
+  }
+
+  /* MAIN CONTAINER */
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* SECTION */
+  .section {
+    margin: 48px 0;
+  }
+  .section-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .q-badge {
+    flex-shrink: 0;
+    background: var(--navy);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin-top: 4px;
+  }
+  .q-badge.accent { background: var(--accent); }
+  .q-badge.teal { background: var(--teal); }
+  .section-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(16px, 2.5vw, 20px);
+    font-weight: 600;
+    color: var(--navy);
+    line-height: 1.5;
+  }
+
+  /* CARD */
+  .card {
+    background: white;
+    border-radius: 12px;
+    padding: 28px 24px;
+    box-shadow: 0 2px 16px rgba(26,39,68,0.07);
+    margin-bottom: 16px;
+  }
+  .chart-wrap {
+    position: relative;
+    margin: 20px 0 16px;
+  }
+
+  /* INSIGHT BOX */
+  .insight {
+    background: linear-gradient(135deg, #f0f4ff 0%, #fff8f5 100%);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 16px 20px;
+    margin-top: 20px;
+    font-size: 14px;
+    color: var(--text-light);
+    line-height: 1.8;
+  }
+  .insight strong { color: var(--navy); font-weight: 700; }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    height: 1px;
+    background: var(--border);
+    margin: 48px 0;
+  }
+
+  /* CATEGORY HEADER */
+  .cat-header {
+    background: var(--navy);
+    color: white;
+    padding: 20px 24px;
+    border-radius: 10px 10px 0 0;
+    margin-bottom: 0;
+  }
+  .cat-header h2 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 18px;
+    font-weight: 600;
+  }
+  .cat-header p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+    margin-top: 4px;
+  }
+  .cat-body {
+    background: white;
+    border-radius: 0 0 10px 10px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(26,39,68,0.08);
+    margin-bottom: 40px;
+  }
+
+  /* HORIZONTAL BAR CUSTOM */
+  .hbar-list { margin: 16px 0; }
+  .hbar-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    font-size: 13px;
+  }
+  .hbar-label {
+    flex: 0 0 180px;
+    text-align: right;
+    color: var(--text-light);
+    font-size: 12px;
+    line-height: 1.4;
+  }
+  .hbar-track {
+    flex: 1;
+    height: 28px;
+    background: #f0f0f0;
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+  .hbar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.8s ease;
+    display: flex;
+    align-items: center;
+    padding-left: 8px;
+  }
+  .hbar-fill span {
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .hbar-count {
+    flex: 0 0 30px;
+    font-weight: 700;
+    color: var(--navy);
+    font-size: 14px;
+  }
+
+  /* LIKERT TABLE */
+  .likert-table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 16px; }
+  .likert-table th {
+    background: var(--navy);
+    color: white;
+    padding: 8px 6px;
+    text-align: center;
+    font-weight: 500;
+  }
+  .likert-table th:first-child { text-align: left; padding-left: 12px; }
+  .likert-table td {
+    padding: 8px 6px;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .likert-table td:first-child {
+    text-align: left;
+    padding-left: 12px;
+    font-size: 12px;
+    color: var(--text-light);
+    max-width: 200px;
+    line-height: 1.4;
+  }
+  .likert-table tr:nth-child(even) td { background: #fafafa; }
+  .dot-1 { color: #2a9d8f; font-weight: 700; }
+  .dot-2 { color: #57b8e0; font-weight: 700; }
+  .dot-3 { color: #aaa; }
+  .dot-4 { color: #f5a623; font-weight: 700; }
+  .dot-5 { color: #e85d3a; font-weight: 700; }
+
+  /* FOOTER */
+  .footer {
+    background: var(--navy);
+    color: rgba(255,255,255,0.55);
+    text-align: center;
+    padding: 40px 24px;
+    font-size: 12px;
+    line-height: 2;
+    margin-top: 64px;
+  }
+  .footer strong { color: white; }
+
+  /* TWO COL */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 600px) {
+    .two-col { grid-template-columns: 1fr; }
+    .hbar-label { flex: 0 0 120px; font-size: 11px; }
+  }
+
+  /* HIGHLIGHT */
+  .highlight-row {
+    background: #fff7f5 !important;
+    border-left: 3px solid var(--accent);
+  }
+  .highlight-row td { font-weight: 600; color: var(--navy) !important; }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">Survey Report 2026</div>
+  <h1>就職氷河期世代<br><span>実態・意識調査</span>レポート</h1>
+  <p class="hero-sub">2026年3月実施｜就職氷河期世代支援コミュニティグループ調査</p>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <span class="num">34</span>
+      <span class="label">有効回答数</span>
+    </div>
+    <div class="hero-stat">
+      <span class="num">82%</span>
+      <span class="label">非正規・無職の割合</span>
+    </div>
+    <div class="hero-stat">
+      <span class="num">82%</span>
+      <span class="label">将来に不安を感じている</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ===== 属性 ===== -->
+  <div style="margin-top:48px;">
+    <div class="cat-header">
+      <h2>📋 回答者の属性</h2>
+      <p>Q1〜Q5｜年齢・性別・地域・就業状況・年収</p>
+    </div>
+    <div class="cat-body">
+      <div class="two-col">
+
+        <!-- Q1 年齢 -->
+        <div>
+          <div class="section-header">
+            <span class="q-badge">Q1</span>
+            <h3 class="section-title" style="font-size:15px;">年齢</h3>
+          </div>
+          <div class="chart-wrap" style="height:220px;">
+            <canvas id="chart_q1"></canvas>
+          </div>
+        </div>
+
+        <!-- Q2 性別 -->
+        <div>
+          <div class="section-header">
+            <span class="q-badge">Q2</span>
+            <h3 class="section-title" style="font-size:15px;">性別</h3>
+          </div>
+          <div class="chart-wrap" style="height:220px;">
+            <canvas id="chart_q2"></canvas>
+          </div>
+        </div>
+
+      </div>
+
+      <hr style="border:none;border-top:1px solid var(--border);margin:24px 0;">
+
+      <div class="two-col">
+        <!-- Q3 地域 -->
+        <div>
+          <div class="section-header">
+            <span class="q-badge">Q3</span>
+            <h3 class="section-title" style="font-size:15px;">居住地域</h3>
+          </div>
+          <div class="chart-wrap" style="height:220px;">
+            <canvas id="chart_q3"></canvas>
+          </div>
+        </div>
+
+        <!-- Q4 就業状況 -->
+        <div>
+          <div class="section-header">
+            <span class="q-badge">Q4</span>
+            <h3 class="section-title" style="font-size:15px;">現在の就業状況</h3>
+          </div>
+          <div class="chart-wrap" style="height:220px;">
+            <canvas id="chart_q4"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Q5 年収 -->
+      <hr style="border:none;border-top:1px solid var(--border);margin:24px 0;">
+      <div class="section-header">
+        <span class="q-badge">Q5</span>
+        <h3 class="section-title" style="font-size:15px;">個人年収</h3>
+      </div>
+      <div class="chart-wrap" style="height:200px; max-width:560px; margin:0 auto;">
+        <canvas id="chart_q5"></canvas>
+      </div>
+      <div class="insight">
+        <strong>📌 属性まとめ：</strong>回答者の約<strong>68%が非正規雇用</strong>。年収は<strong>300万円未満が71%</strong>を占め、うち100万円未満も18%存在する。関東在住が過半数を占めるが、全国各地から幅広く回答が集まった。
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 氷河期の経験・現状 ===== -->
+  <div class="cat-header">
+    <h2>📉 氷河期の経験と現在の困難</h2>
+    <p>Q6〜Q9｜就職時の経験、現在の困りごと、生活水準と将来見通し</p>
+  </div>
+  <div class="cat-body">
+
+    <!-- Q6 -->
+    <div class="section-header">
+      <span class="q-badge accent">Q6</span>
+      <h3 class="section-title">就職氷河期（1993〜2004年）にどのような経験をしましたか？<br><small style="font-size:13px;color:var(--text-light);">複数選択可</small></h3>
+    </div>
+    <div class="hbar-list" id="q6_bars"></div>
+    <div class="insight">
+      <strong>📌 ポイント：</strong>最多は「<strong>希望する企業・職種に就職できなかった</strong>」（50%）、次いで「<strong>正規雇用に就けたがブラック企業だった</strong>」（41%）。当時の選択肢の乏しさが数字に表れている。
+    </div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:28px 0;">
+
+    <!-- Q7 -->
+    <div class="section-header">
+      <span class="q-badge accent">Q7</span>
+      <h3 class="section-title">現在、生活・仕事で困っていることは？<br><small style="font-size:13px;color:var(--text-light);">複数選択可</small></h3>
+    </div>
+    <div class="hbar-list" id="q7_bars"></div>
+    <div class="insight">
+      <strong>📌 ポイント：</strong>「<strong>収入・賃金が低い</strong>」が76%でトップ。「<strong>老後・年金への不安</strong>」62%、「<strong>非正規固定化</strong>」59%が続く。経済的困難が複合的に絡み合っている実態が浮かぶ。
+    </div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:28px 0;">
+
+    <!-- Q8 & Q9 -->
+    <div class="two-col">
+      <div>
+        <div class="section-header">
+          <span class="q-badge accent">Q8</span>
+          <h3 class="section-title" style="font-size:15px;">現在の生活水準</h3>
+        </div>
+        <div class="chart-wrap" style="height:220px;">
+          <canvas id="chart_q8"></canvas>
+        </div>
+      </div>
+      <div>
+        <div class="section-header">
+          <span class="q-badge accent">Q9</span>
+          <h3 class="section-title" style="font-size:15px;">将来への見通し</h3>
+        </div>
+        <div class="chart-wrap" style="height:220px;">
+          <canvas id="chart_q9"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="insight">
+      <strong>📌 ポイント：</strong>生活水準に「<strong>不満（やや＋非常に）」は59%</strong>。将来見通しは深刻で、「<strong>非常に不安を感じている</strong>」だけで<strong>56%</strong>、「やや不安」を合わせると<strong>82%</strong>が将来に不安を抱えている。
+    </div>
+  </div>
+
+  <!-- ===== 支援への要望 ===== -->
+  <div class="cat-header">
+    <h2>🙏 支援への要望・期待</h2>
+    <p>Q10〜Q12｜優先してほしい支援、対象範囲、実施主体</p>
+  </div>
+  <div class="cat-body">
+
+    <!-- Q10 -->
+    <div class="section-header">
+      <span class="q-badge teal">Q10</span>
+      <h3 class="section-title">最も優先してほしい支援（3つまで選択）</h3>
+    </div>
+    <div class="hbar-list" id="q10_bars"></div>
+    <div class="insight">
+      <strong>📌 ポイント：</strong>「<strong>年金の救済措置</strong>」が最多（59%）。「<strong>正規雇用への転換促進</strong>」「<strong>中高年採用を促す優遇措置</strong>」が続く。老後の生活基盤と現役時代の雇用の両方が切実な課題。
+    </div>
+
+    <hr style="border:none;border-top:1px solid var(--border);margin:28px 0;">
+
+    <div class="two-col">
+      <!-- Q11 -->
+      <div>
+        <div class="section-header">
+          <span class="q-badge teal">Q11</span>
+          <h3 class="section-title" style="font-size:15px;">支援の対象範囲</h3>
+        </div>
+        <div class="chart-wrap" style="height:240px;">
+          <canvas id="chart_q11"></canvas>
+        </div>
+      </div>
+      <!-- Q12 -->
+      <div>
+        <div class="section-header">
+          <span class="q-badge teal">Q12</span>
+          <h3 class="section-title" style="font-size:15px;">支援の実施主体（複数選択可）</h3>
+        </div>
+        <div class="chart-wrap" style="height:240px;">
+          <canvas id="chart_q12"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="insight">
+      <strong>📌 ポイント：</strong>対象範囲では「<strong>非正規雇用者全員</strong>」が41%でトップ。実施主体への期待は「<strong>国（政府・厚労省）</strong>」が圧倒的（79%）。行政への強い期待と責任帰属意識が読み取れる。
+    </div>
+  </div>
+
+  <!-- ===== 政府への評価 ===== -->
+  <div class="cat-header">
+    <h2>🏛️ 政府・政策への評価と期待</h2>
+    <p>Q13〜Q14｜既存支援策の評価、高市総理の支援表明への受け止め</p>
+  </div>
+  <div class="cat-body">
+    <div class="two-col">
+      <div>
+        <div class="section-header">
+          <span class="q-badge accent">Q13</span>
+          <h3 class="section-title" style="font-size:15px;">政府の既存支援策の評価</h3>
+        </div>
+        <div class="chart-wrap" style="height:220px;">
+          <canvas id="chart_q13"></canvas>
+        </div>
+      </div>
+      <div>
+        <div class="section-header">
+          <span class="q-badge accent">Q14</span>
+          <h3 class="section-title" style="font-size:15px;">高市総理の支援表明への受け止め</h3>
+        </div>
+        <div class="chart-wrap" style="height:220px;">
+          <canvas id="chart_q14"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="insight">
+      <strong>📌 ポイント：</strong>既存支援策は「<strong>ほとんど効果がなかった</strong>」が76%と圧倒的。高市総理の支援表明についても「<strong>まったく期待していない</strong>」が29%、「あまり期待していない」14%と不信感が強い。一方で「様子を見たい」が35%おり、実行を見届けたいという声も多い。
+    </div>
+  </div>
+
+  <!-- ===== Q15 政策案 ===== -->
+  <div class="cat-header">
+    <h2>📊 具体的政策案への必要性評価</h2>
+    <p>Q15｜8つの政策案それぞれについて「必要か」を5段階で評価</p>
+  </div>
+  <div class="cat-body">
+    <div class="chart-wrap" style="height:380px;">
+      <canvas id="chart_q15"></canvas>
+    </div>
+    <div style="margin-top:20px;">
+      <table class="likert-table">
+        <thead>
+          <tr>
+            <th>政策案</th>
+            <th><span class="dot-1">非常に必要</span></th>
+            <th><span class="dot-2">必要</span></th>
+            <th><span class="dot-3">どちらとも</span></th>
+            <th><span class="dot-4">あまり不要</span></th>
+            <th><span class="dot-5">不要</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="highlight-row">
+            <td>非正規労働者への年金・社会保険特例措置</td>
+            <td class="dot-1">22</td>
+            <td class="dot-2">8</td>
+            <td class="dot-3">2</td>
+            <td class="dot-4">2</td>
+            <td class="dot-5">0</td>
+          </tr>
+          <tr>
+            <td>家賃補助など住居の安定化支援</td>
+            <td class="dot-1">17</td>
+            <td class="dot-2">10</td>
+            <td class="dot-3">4</td>
+            <td class="dot-4">2</td>
+            <td class="dot-5">1</td>
+          </tr>
+          <tr>
+            <td>氷河期世代専用の就職・転職支援窓口</td>
+            <td class="dot-1">12</td>
+            <td class="dot-2">15</td>
+            <td class="dot-3">3</td>
+            <td class="dot-4">0</td>
+            <td class="dot-5">4</td>
+          </tr>
+          <tr>
+            <td>正規雇用転換を促す企業への税優遇・補助金</td>
+            <td class="dot-1">12</td>
+            <td class="dot-2">11</td>
+            <td class="dot-3">6</td>
+            <td class="dot-4">3</td>
+            <td class="dot-5">2</td>
+          </tr>
+          <tr>
+            <td>メンタルヘルス相談・孤立対策の強化</td>
+            <td class="dot-1">12</td>
+            <td class="dot-2">11</td>
+            <td class="dot-3">6</td>
+            <td class="dot-4">1</td>
+            <td class="dot-5">3</td>
+          </tr>
+          <tr>
+            <td>中高年採用に特化した合同就職説明会</td>
+            <td class="dot-1">11</td>
+            <td class="dot-2">11</td>
+            <td class="dot-3">6</td>
+            <td class="dot-4">1</td>
+            <td class="dot-5">4</td>
+          </tr>
+          <tr>
+            <td>中高年向けの公的職業訓練プログラムの拡充</td>
+            <td class="dot-1">8</td>
+            <td class="dot-2">13</td>
+            <td class="dot-3">7</td>
+            <td class="dot-4">4</td>
+            <td class="dot-5">2</td>
+          </tr>
+          <tr>
+            <td>フリーランス・個人事業主への税制優遇</td>
+            <td class="dot-1">7</td>
+            <td class="dot-2">8</td>
+            <td class="dot-3">14</td>
+            <td class="dot-4">1</td>
+            <td class="dot-5">4</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="insight">
+      <strong>📌 ポイント：</strong>「<strong>非正規労働者への年金・社会保険の特例措置</strong>」は「非常に必要＋必要」が<strong>88%</strong>と群を抜いて高い。「<strong>住居の安定化支援</strong>」も79%。フリーランス税制優遇は「どちらとも言えない」が多く、対象が限定的と見られている。
+    </div>
+  </div>
+
+  <!-- ===== 財源・根本原因 ===== -->
+  <div class="cat-header">
+    <h2>💡 財源と問題の根本原因</h2>
+    <p>Q16〜Q17｜財源についての考え方、問題の根本原因認識</p>
+  </div>
+  <div class="cat-body">
+    <div class="two-col">
+      <div>
+        <div class="section-header">
+          <span class="q-badge teal">Q16</span>
+          <h3 class="section-title" style="font-size:15px;">支援策の財源についての考え方</h3>
+        </div>
+        <div class="chart-wrap" style="height:240px;">
+          <canvas id="chart_q16"></canvas>
+        </div>
+      </div>
+      <div>
+        <div class="section-header">
+          <span class="q-badge teal">Q17</span>
+          <h3 class="section-title" style="font-size:15px;">問題の根本原因</h3>
+        </div>
+        <div class="chart-wrap" style="height:240px;">
+          <canvas id="chart_q17"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="insight">
+      <strong>📌 ポイント：</strong>財源については「<strong>企業課税</strong>」と「<strong>国の積極的財政出動</strong>」がそれぞれ29%で同率トップ。「財源より実効性を」も26%。問題の根本原因については「<strong>バブル崩壊後の政府・企業の雇用政策の失敗</strong>」が<strong>82%</strong>と圧倒的多数を占める。
+    </div>
+  </div>
+
+  <!-- ===== Q20 ===== -->
+  <div class="section">
+    <div class="section-header">
+      <span class="q-badge">Q20</span>
+      <h3 class="section-title">今後、集計結果・政策情報を受け取りたいですか？</h3>
+    </div>
+    <div class="card">
+      <div class="chart-wrap" style="height:200px; max-width:400px; margin:0 auto;">
+        <canvas id="chart_q20"></canvas>
+      </div>
+      <div class="insight">
+        <strong>📌 ポイント：</strong>「<strong>はい、受け取りたい</strong>」が68%。この問題に対する当事者の関心の高さと、継続的な情報発信・政策活動への期待が伺える。
+      </div>
+    </div>
+  </div>
+
+</div><!-- /container -->
+
+<div class="footer">
+  <strong>就職氷河期世代 実態・意識調査レポート 2026</strong><br>
+  調査期間：2026年3月｜有効回答数：34名<br>
+  ※このレポートは就職氷河期世代支援コミュニティグループが実施した任意アンケートの集計結果です
+</div>
+
+<script>
+const N = 34;
+const pct = (n) => Math.round(n/N*100);
+
+const navy = '#1a2744';
+const navyM = '#344a74';
+const accent = '#e85d3a';
+const accent2 = '#f5a623';
+const teal = '#2a9d8f';
+const sky = '#57b8e0';
+const sage = '#6cb8a0';
+const purple = '#9b72cf';
+
+// Color palettes
+const palBlue = ['#1a2744','#263558','#344a74','#4a6491','#7090b8','#a8bee0'];
+const palWarm = ['#e85d3a','#f5a623','#f5d37a','#2a9d8f','#57b8e0','#9b72cf'];
+
+const donutOpts = (title) => ({
+  responsive: true, maintainAspectRatio: false,
+  plugins: {
+    legend: { position:'right', labels:{ font:{size:11}, boxWidth:12, padding:8 } },
+    title: title ? {display:true, text:title} : {display:false},
+    tooltip: { callbacks: { label: (c) => ` ${c.label}: ${c.raw}名 (${pct(c.raw)}%)` } }
+  }
+});
+
+const barHOpts = (title) => ({
+  indexAxis:'y', responsive:true, maintainAspectRatio:false,
+  plugins: {
+    legend:{display:false},
+    tooltip:{ callbacks:{ label:(c) => ` ${c.raw}名 (${pct(c.raw)}%)` } }
+  },
+  scales:{
+    x:{ grid:{color:'#f0f0f0'}, ticks:{font:{size:11}} },
+    y:{ grid:{display:false}, ticks:{font:{size:11}} }
+  }
+});
+
+// Q1 年齢
+new Chart(document.getElementById('chart_q1'), {
+  type:'doughnut',
+  data:{
+    labels:['43〜45歳','49〜51歳','46〜48歳','52〜54歳','55歳以上'],
+    datasets:[{data:[11,10,6,5,2], backgroundColor:palBlue, borderWidth:2, borderColor:'white'}]
+  },
+  options: donutOpts()
+});
+
+// Q2 性別
+new Chart(document.getElementById('chart_q2'), {
+  type:'doughnut',
+  data:{
+    labels:['女性','男性'],
+    datasets:[{data:[20,14], backgroundColor:['#e85d3a','#344a74'], borderWidth:2, borderColor:'white'}]
+  },
+  options: donutOpts()
+});
+
+// Q3 地域
+new Chart(document.getElementById('chart_q3'), {
+  type:'doughnut',
+  data:{
+    labels:['関東','北海道・東北','近畿','中部・東海','中国・四国','九州・沖縄'],
+    datasets:[{data:[18,4,4,4,2,2], backgroundColor:palBlue, borderWidth:2, borderColor:'white'}]
+  },
+  options: donutOpts()
+});
+
+// Q4 就業状況
+new Chart(document.getElementById('chart_q4'), {
+  type:'doughnut',
+  data:{
+    labels:['非正規雇用','正規雇用','自営業・FL','無職（求職中）','無職（非求職）'],
+    datasets:[{data:[23,4,3,2,2], backgroundColor:['#e85d3a','#2a9d8f','#f5a623','#9b72cf','#aaa'], borderWidth:2, borderColor:'white'}]
+  },
+  options: donutOpts()
+});
+
+// Q5 年収
+new Chart(document.getElementById('chart_q5'), {
+  type:'bar',
+  data:{
+    labels:['100万未満','100〜200万','200〜300万','300〜400万','500万以上'],
+    datasets:[{
+      data:[6,9,9,5,5],
+      backgroundColor:['#e85d3a','#f5a623','#f5d37a','#57b8e0','#2a9d8f'],
+      borderRadius:4
+    }]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{display:false}, tooltip:{callbacks:{label:(c)=>` ${c.raw}名 (${pct(c.raw)}%)`}} },
+    scales:{
+      y:{ grid:{color:'#f0f0f0'}, ticks:{stepSize:2, font:{size:11}}, beginAtZero:true },
+      x:{ grid:{display:false}, ticks:{font:{size:11}} }
+    }
+  }
+});
+
+// Q6 横棒
+function renderHBars(containerId, data, maxN, color) {
+  const container = document.getElementById(containerId);
+  const sorted = [...data].sort((a,b) => b[1]-a[1]);
+  const total = N;
+  sorted.forEach(([label, count]) => {
+    const pctVal = Math.round(count/total*100);
+    const barW = Math.round(count/maxN*100);
+    const div = document.createElement('div');
+    div.className = 'hbar-item';
+    div.innerHTML = `
+      <div class="hbar-label">${label}</div>
+      <div class="hbar-track">
+        <div class="hbar-fill" style="width:${barW}%; background:${color};">
+          <span>${pctVal}%</span>
+        </div>
+      </div>
+      <div class="hbar-count">${count}</div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+renderHBars('q6_bars', [
+  ['希望する企業・職種に就職できなかった', 17],
+  ['正規雇用に就けたが過酷な労働環境（ブラック）', 14],
+  ['非正規雇用しか選択肢がなかった', 13],
+  ['早期離職を余儀なくされた', 8],
+  ['就職浪人・留年を余儀なくされた', 4],
+  ['その他', 4],
+  ['特に影響を受けなかった', 4],
+  ['進学・資格取得で就職を先延ばし', 2],
+], 17, accent);
+
+renderHBars('q7_bars', [
+  ['収入・賃金が低い', 26],
+  ['老後・年金が不安', 21],
+  ['雇用が不安定・非正規のまま固定', 20],
+  ['正規雇用への転職・転換が難しい', 19],
+  ['健康・メンタルヘルスに問題', 17],
+  ['孤立・社会的なつながりがない', 10],
+  ['スキルアップの機会がない', 9],
+  ['婚姻・子育てを断念または先延ばし', 7],
+  ['住居が不安定または住居費が重い', 7],
+  ['特に困っていることはない', 1],
+], 26, navyM);
+
+renderHBars('q10_bars', [
+  ['年金の救済措置（納付期間の特例・加算）', 20],
+  ['正規雇用への転換促進（補助金・インセンティブ）', 18],
+  ['中高年採用を促す企業への優遇措置', 15],
+  ['住居支援（家賃補助・公営住宅優先入居）', 14],
+  ['非正規雇用労働者への社会保険適用拡大', 13],
+  ['親や配偶者の介護支援', 13],
+  ['賃金底上げのための最低賃金引き上げ', 10],
+  ['職業訓練・リスキリング支援', 8],
+  ['メンタルヘルス・就労相談窓口の充実', 8],
+  ['婚姻・子育て支援', 5],
+  ['起業・フリーランス支援', 5],
+], 20, teal);
+
+// Q8 生活水準
+new Chart(document.getElementById('chart_q8'), {
+  type:'doughnut',
+  data:{
+    labels:['非常に不満がある','やや不満がある','どちらとも言えない','やや満足している','十分満足している'],
+    datasets:[{data:[12,8,8,4,2], backgroundColor:['#e85d3a','#f5a623','#aaa','#57b8e0','#2a9d8f'], borderWidth:2, borderColor:'white'}]
+  },
+  options: donutOpts()
+});
+
+// Q9 将来見通し
+new Chart(document.getElementById('chart_q9'), {
+  type:'doughnut',
+  data:{
+    labels:['非常に不安を感じている','やや不安を感じている','どちらとも言えない','やや前向きに考えられる'],
+    datasets:[{data:[19,9,3,3], backgroundColor:['#e85d3a','#f5a623','#aaa','#2a9d8f'], borderWidth:2, borderColor:'white'}]
+  },
+  options: donutOpts()
+});
+
+// Q11 対象範囲
+new Chart(document.getElementById('chart_q11'), {
+  type:'doughnut',
+  data:{
+    labels:['非正規雇用者全員','氷河期世代全体','困窮者・低所得者','困窮している人に絞る','わからない'],
+    datasets:[{data:[14,9,5,3,3], backgroundColor:palBlue, borderWidth:2, borderColor:'white'}]
+  },
+  options: donutOpts()
+});
+
+// Q12 実施主体
+new Chart(document.getElementById('chart_q12'), {
+  type:'bar',
+  data:{
+    labels:['国（政府・厚労省）','地方自治体','直接給付でよい','ハローワーク','民間・NPO'],
+    datasets:[{data:[27,17,8,6,2], backgroundColor:[navy,navyM,'#344a74','#57b8e0','#aaa'], borderRadius:4}]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    plugins:{ legend:{display:false}, tooltip:{callbacks:{label:(c)=>` ${c.raw}名 (${pct(c.raw)}%)`}} },
+    scales:{
+      y:{ grid:{color:'#f0f0f0'}, beginAtZero:true, ticks:{font:{size:11}} },
+      x:{ grid:{display:false}, ticks:{font:{size:10}, maxRotation:30} }
+    }
+  }
+});
+
+// Q13 既存支援策評価
+new Chart(document.getElementById('chart_q13'), {
+  type:'doughnut',
+  data:{
+    labels:['ほとんど効果なし','あまり効果なし','取り組みを知らなかった'],
+    datasets:[{data:[26,4,4], backgroundColor:['#e85d3a','#f5a623','#aaa'], borderWidth:2, borderColor:'white'}]
+  },
+  options: donutOpts()
+});
+
+// Q14 高市総理への受け止め
+new Chart(document.getElementById('chart_q14'), {
+  type:'doughnut',
+  data:{
+    labels:['様子を見たい','まったく期待しない','あまり期待しない','やや期待している','非常に期待している'],
+    datasets:[{data:[12,10,5,4,3], backgroundColor:['#aaa','#e85d3a','#f5a623','#57b8e0','#2a9d8f'], borderWidth:2, borderColor:'white'}]
+  },
+  options: donutOpts()
+});
+
+// Q15 Stacked bar
+new Chart(document.getElementById('chart_q15'), {
+  type:'bar',
+  data:{
+    labels:[
+      '年金・社会保険特例措置',
+      '住居の安定化支援',
+      '就職・転職支援窓口',
+      '正規転換促す税優遇',
+      'メンタルヘルス対策',
+      '合同就職説明会',
+      '公的職業訓練拡充',
+      'フリーランス税制優遇'
+    ],
+    datasets:[
+      {label:'非常に必要', data:[22,17,12,12,12,11,8,7], backgroundColor:'#2a9d8f'},
+      {label:'必要', data:[8,10,15,11,11,11,13,8], backgroundColor:'#57b8e0'},
+      {label:'どちらとも', data:[2,4,3,6,6,6,7,14], backgroundColor:'#d0d0d0'},
+      {label:'あまり必要ない', data:[2,2,0,3,1,1,4,1], backgroundColor:'#f5a623'},
+      {label:'必要ない', data:[0,1,4,2,3,4,2,4], backgroundColor:'#e85d3a'},
+    ]
+  },
+  options:{
+    indexAxis:'y', responsive:true, maintainAspectRatio:false,
+    plugins:{
+      legend:{ position:'bottom', labels:{ font:{size:11}, boxWidth:12, padding:10 }},
+      tooltip:{ callbacks:{ label:(c)=>` ${c.dataset.label}: ${c.raw}名` }}
+    },
+    scales:{
+      x:{ stacked:true, max:34, grid:{color:'#f0f0f0'}, ticks:{font:{size:11}} },
+      y:{ stacked:true, grid:{display:false}, ticks:{font:{size:12}} }
+    }
+  }
+});
+
+// Q16 財源
+new Chart(document.getElementById('chart_q16'), {
+  type:'doughnut',
+  data:{
+    labels:['企業への課税・負担増','積極的財政出動','財源より実効性を','既存予算の組み替え','わからない'],
+    datasets:[{data:[10,10,9,4,1], backgroundColor:['#e85d3a','#344a74','#2a9d8f','#f5a623','#aaa'], borderWidth:2, borderColor:'white'}]
+  },
+  options: donutOpts()
+});
+
+// Q17 根本原因
+new Chart(document.getElementById('chart_q17'), {
+  type:'doughnut',
+  data:{
+    labels:['政府・企業の雇用政策の失敗','日本型雇用慣行の構造問題','複合的な要因','時代・運の問題'],
+    datasets:[{data:[28,3,2,1], backgroundColor:['#1a2744','#344a74','#57b8e0','#aaa'], borderWidth:2, borderColor:'white'}]
+  },
+  options: donutOpts()
+});
+
+// Q20 情報受け取り
+new Chart(document.getElementById('chart_q20'), {
+  type:'doughnut',
+  data:{
+    labels:['はい、受け取りたい','どちらでもよい','いいえ、不要'],
+    datasets:[{data:[23,7,4], backgroundColor:['#2a9d8f','#aaa','#e85d3a'], borderWidth:2, borderColor:'white'}]
+  },
+  options: donutOpts()
+});
+
+</script>
+</body>
+</html>
